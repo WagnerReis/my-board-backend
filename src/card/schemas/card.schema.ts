@@ -15,6 +15,9 @@ export const CardSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    code: {
+      type: Number,
+    },
     estimated: {
       type: Number,
       default: null,

@@ -10,8 +10,17 @@ export class CardService {
     @Inject('CARD_MODEL')
     private cardModel: Model<Card>,
   ) {}
-  create(createCardDto: CreateCardDto) {
-    const createdCard = new this.cardModel(createCardDto);
+  async create(createCardDto: CreateCardDto) {
+    let codeNumber: number = await this.cardModel.countDocuments();
+    codeNumber++;
+
+    const newCard = {
+      ...createCardDto,
+      code: codeNumber,
+      dueDate: new Date(createCardDto.dueDate),
+    };
+
+    const createdCard = new this.cardModel(newCard);
     return createdCard.save();
   }
 

@@ -7,6 +7,9 @@ export class CreateCardDto {
   @IsString()
   description: string;
 
+  @IsNumber()
+  code: number;
+
   @IsString()
   status: string;
 
