@@ -24,7 +24,6 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    console.log(email);
     const user = this.userModel.findOne({
       email,
     });
