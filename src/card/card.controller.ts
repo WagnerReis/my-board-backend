@@ -12,7 +12,7 @@ import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto, UpdateStatusCardDto } from './dto/update-card.dto';
 
-@Controller('card')
+@Controller('cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
@@ -23,11 +23,12 @@ export class CardController {
 
   @Get()
   findAll(
+    @Query('title') title: string,
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('sort') sort: number,
   ) {
-    return this.cardService.findAll({ page, limit, sort });
+    return this.cardService.findAll({ title, page, limit, sort });
   }
 
   @Get(':id')

@@ -24,9 +24,9 @@ export class CardService {
     return createdCard.save();
   }
 
-  findAll({ page, limit, sort }) {
+  findAll({ title, page, limit, sort }) {
     const cards = this.cardModel.find(
-      {},
+      { $or: [{ title: new RegExp(title) }, { code: title }] },
       {},
       { skip: page * limit, limit, sort },
     );
