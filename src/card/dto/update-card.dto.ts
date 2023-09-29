@@ -9,3 +9,15 @@ export class UpdateStatusCardDto {
   @IsNotEmpty()
   status: string;
 }
+
+export class UpdateEstimatedCardDto {
+  @IsString()
+  @IsNotEmpty()
+  estimated: number;
+}
+
+export class UpdateDueDateCardDto {
+  @IsString()
+  @IsNotEmpty()
+  string: string;
+}

@@ -1,8 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
-import { UpdateCardDto, UpdateStatusCardDto } from './dto/update-card.dto';
+import {
+  UpdateCardDto,
+  UpdateDueDateCardDto,
+  UpdateEstimatedCardDto,
+  UpdateStatusCardDto,
+} from './dto/update-card.dto';
 import { Model } from 'mongoose';
 import { Card } from './interfaces/card.interface';
+
+interface Filter {
+  title?: RegExp;
+  code?: string;
+}
 
 @Injectable()
 export class CardService {
@@ -25,8 +35,11 @@ export class CardService {
   }
 
   findAll({ title, page, limit, sort }) {
+    const filter = [{ title: new RegExp(title) }] as Filter[];
+    if (!isNaN(title)) filter.push({ code: title });
+
     const cards = this.cardModel.find(
-      { $or: [{ title: new RegExp(title) }, { code: title }] },
+      { $or: filter },
       {},
       { skip: page * limit, limit, sort },
     );
@@ -48,6 +61,20 @@ export class CardService {
 
   updateStatus(id: string, updateStatusCardDto: UpdateStatusCardDto) {
     return this.cardModel.updateOne({ _id: id }, { $set: updateStatusCardDto });
+  }
+
+  updateEstimated(id: string, updateEstimatedCardDto: UpdateEstimatedCardDto) {
+    return this.cardModel.updateOne(
+      { _id: id },
+      { $set: updateEstimatedCardDto },
+    );
+  }
+
+  updateDueDate(id: string, updateDueDateCardDto: UpdateDueDateCardDto) {
+    return this.cardModel.updateOne(
+      { _id: id },
+      { $set: updateDueDateCardDto },
+    );
   }
 
   remove(id: string) {
