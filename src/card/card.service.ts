@@ -41,7 +41,11 @@ export class CardService {
       throw new HttpException('user_id not found.', HttpStatus.NOT_FOUND);
     const filterTrim = title ? title.trim() : '';
     let filter: Filter;
-    if (!isNaN(title) && typeof +title === 'number') {
+    if (
+      filterTrim !== '' &&
+      !isNaN(filterTrim) &&
+      typeof +filterTrim === 'number'
+    ) {
       filter = { code: title };
     } else {
       filter =
