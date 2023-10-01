@@ -12,8 +12,8 @@ import { Card } from './interfaces/card.interface';
 interface Filter {
   title?: RegExp;
   code?: string;
-  $text?: any;
-  user_id?: any;
+  $text?: { $search: string };
+  user_id?: string;
 }
 
 @Injectable()
