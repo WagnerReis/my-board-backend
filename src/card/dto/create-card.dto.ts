@@ -18,4 +18,7 @@ export class CreateCardDto {
 
   @IsDate()
   dueDate: Date;
+
+  @IsString()
+  user_id: string;
 }

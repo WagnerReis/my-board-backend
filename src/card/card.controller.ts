@@ -29,11 +29,12 @@ export class CardController {
   @Get()
   findAll(
     @Query('title') title: string,
+    @Query('user_id') user_id: string,
     @Query('page') page: number,
     @Query('limit') limit: number,
     @Query('sort') sort: number,
   ) {
-    return this.cardService.findAll({ title, page, limit, sort });
+    return this.cardService.findAll({ user_id, title, page, limit, sort });
   }
 
   @Get(':id')

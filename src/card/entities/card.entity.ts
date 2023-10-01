@@ -5,4 +5,5 @@ export class Card {
   status: string;
   estimated: number;
   dueDate: Date;
+  user_id: string;
 }

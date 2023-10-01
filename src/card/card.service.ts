@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import {
   UpdateCardDto,
@@ -12,6 +12,8 @@ import { Card } from './interfaces/card.interface';
 interface Filter {
   title?: RegExp;
   code?: string;
+  $text?: any;
+  user_id?: any;
 }
 
 @Injectable()
@@ -34,12 +36,22 @@ export class CardService {
     return createdCard.save();
   }
 
-  findAll({ title, page, limit, sort }) {
-    const filter = [{ title: new RegExp(title) }] as Filter[];
-    if (!isNaN(title)) filter.push({ code: title });
+  findAll({ user_id, title, page, limit, sort }) {
+    if (!user_id)
+      throw new HttpException('user_id not found.', HttpStatus.NOT_FOUND);
+    const filterTrim = title ? title.trim() : '';
+    let filter: Filter;
+    if (!isNaN(title) && typeof +title === 'number') {
+      filter = { code: title };
+    } else {
+      filter =
+        filterTrim === ''
+          ? { user_id }
+          : { $text: { $search: String(title) }, user_id };
+    }
 
     const cards = this.cardModel.find(
-      { $or: filter },
+      filter,
       {},
       { skip: page * limit, limit, sort },
     );

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 export const CardSchema = new mongoose.Schema(
   {
@@ -26,8 +26,15 @@ export const CardSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    user_id: {
+      type: mongoose.Types.ObjectId,
+      require: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
   },
 );
+
+CardSchema.index({ title: 'text' });
